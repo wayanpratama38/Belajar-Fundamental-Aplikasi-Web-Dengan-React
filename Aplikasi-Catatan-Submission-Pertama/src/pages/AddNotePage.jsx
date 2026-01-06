@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
-import DoneIcon from "../../public/done.svg?react";
+import DoneIcon from "../assets/done.svg";
 
 export default function AddNotePageWrapper({ onAdd }) {
   const navigate = useNavigate();

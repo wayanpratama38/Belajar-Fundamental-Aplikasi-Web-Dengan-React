@@ -1,6 +1,6 @@
 import SearchBar from "../components/SearchBar";
 import Button from "../components/Button";
-import AddIcon from "../../public/add.svg?react";
+import AddIcon from "../assets/add.svg";
 import NoteList from "../components/NoteList";
 
 export default function MainPage({ notes }) {

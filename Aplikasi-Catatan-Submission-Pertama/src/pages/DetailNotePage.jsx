@@ -3,9 +3,9 @@ import { showFormattedDate } from "../utils";
 import { useParams, useNavigate } from "react-router-dom";
 import { getNote } from "../utils/local-data";
 import Button from "../components/Button";
-import ArchiveIconDown from "../../public/archive-down.svg?react";
-import DeleteIcon from "../../public/delete.svg?react";
-import ArchiveIconUp from "../../public/archive-up.svg?react";
+import ArchiveIconDown from "../assets/archive-down.svg";
+import DeleteIcon from "../assets/delete.svg";
+import ArchiveIconUp from "../assets/archive-up.svg";
 
 export default function DetailNotePage({ onDelete, onArchive, onUnarchive }) {
   const { id } = useParams();
@@ -37,7 +37,14 @@ export default function DetailNotePage({ onDelete, onArchive, onUnarchive }) {
       </p>
       <p className="detail-page__body">{note.body}</p>
       <div className="detail-page__action">
-        {note.archived ? (
+        <Button
+          type="submit"
+          image={note.archived ? ArchiveIconUp : ArchiveIconDown}
+          altImage={"Unarchive Icon"}
+          onClick={note.archived ? unarchiveNoteHandler : archiveNoteHandler}
+        />
+
+        {/* {note.archived ? (
           <Button
             type="submit"
             image={ArchiveIconUp}
@@ -51,7 +58,7 @@ export default function DetailNotePage({ onDelete, onArchive, onUnarchive }) {
             altImage={"Archive Icon"}
             onClick={archiveNoteHandler}
           />
-        )}
+        )} */}
         <Button
           type="submit"
           image={DeleteIcon}
