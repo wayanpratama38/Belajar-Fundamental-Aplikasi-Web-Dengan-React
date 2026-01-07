@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useSearchParams } from "react-router-dom";
 import {
   addNote,
   archiveNote,
@@ -14,7 +14,18 @@ import ArchivePage from "./pages/ArchivePage";
 import NavigationBar from "./components/NavigationBar";
 import AddNotePageWrapper from "./pages/AddNotePage";
 
-export default class App extends React.Component {
+export default function AppWrapper() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const keyword = searchParams.get("title") || "";
+  const onChangeSearchParams = (keyword) => {
+    return setSearchParams({ title: keyword });
+  }
+
+  return <App searchKeyword={keyword} onSearchHandler={onChangeSearchParams} />
+}
+
+class App extends React.Component {
   constructor(props) {
     super(props);
 
@@ -26,13 +37,14 @@ export default class App extends React.Component {
     this.onDeleteHandler = this.onDeleteHandler.bind(this);
     this.onArchiveHandler = this.onArchiveHandler.bind(this);
     this.onUnarchiveHandler = this.onUnarchiveHandler.bind(this);
+    this.onSearchHandler = this.onSearchHandler.bind(this)
   }
 
   onArchiveHandler(id) {
     archiveNote(id);
     this.setState({
-      notes: getActiveNotes(),
-      archivedNotes: getArchivedNotes(),
+      notes: this.props.searchKeyword ? [] : getActiveNotes(),
+      archivedNotes: this.props.searchKeyword ? [] : getArchivedNotes(),
     });
   }
 
@@ -54,7 +66,18 @@ export default class App extends React.Component {
     });
   }
 
+  onSearchHandler(keyword) {
+    this.props.onSearchHandler(keyword);
+  }
+
   render() {
+    const activeNotesDisplayed = this.state.notes.filter((note) => {
+      return note.title.toLocaleLowerCase().includes(this.props.searchKeyword.toLocaleLowerCase());
+    })
+
+    const archiveNotesDisplayed = this.state.archivedNotes.filter((note) => {
+      return note.title.toLocaleLowerCase().includes(this.props.searchKeyword.toLocaleLowerCase());
+    })
     return (
       <div className="app-container">
         <header>
@@ -62,10 +85,10 @@ export default class App extends React.Component {
         </header>
         <main>
           <Routes>
-            <Route path="/" element={<MainPage notes={this.state.notes} />} />
+            <Route path="/" element={<MainPage notes={activeNotesDisplayed} onSearch={this.onSearchHandler} keyword={this.props.searchKeyword} />} />
             <Route
               path="/archives"
-              element={<ArchivePage archivedNotes={this.state.archivedNotes} />}
+              element={<ArchivePage archivedNotes={archiveNotesDisplayed} onSearch={this.onSearchHandler} keyword={this.props.searchKeyword} />}
             />
             <Route
               path="/:id"
