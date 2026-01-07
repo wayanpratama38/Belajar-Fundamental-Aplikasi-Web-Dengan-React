@@ -38,7 +38,7 @@ export default class App extends React.Component {
 
   onDeleteHandler(id) {
     deleteNote(id);
-    this.setState({ notes: getActiveNotes() });
+    this.setState({ notes: getActiveNotes(), archivedNotes: getArchivedNotes() });
   }
 
   onAddHandler({ title, body }) {

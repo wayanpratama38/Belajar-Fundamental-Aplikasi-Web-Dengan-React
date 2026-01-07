@@ -1,4 +1,3 @@
-import NotFoundPage from "./NotFoundPage";
 import SearchBar from "../components/SearchBar";
 import NoteList from "../components/NoteList";
 
