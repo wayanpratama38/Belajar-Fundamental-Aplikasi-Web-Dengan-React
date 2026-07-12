@@ -13,6 +13,8 @@ import DetailNotePage from "./pages/DetailNotePage";
 import ArchivePage from "./pages/ArchivePage";
 import NavigationBar from "./components/NavigationBar";
 import AddNotePageWrapper from "./pages/AddNotePage";
+import RegisterPage from "./pages/RegisterPage";
+import LoginPage from "./pages/LoginPage";
 
 export default function AppWrapper() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -85,6 +87,8 @@ class App extends React.Component {
         </header>
         <main>
           <Routes>
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={<MainPage notes={activeNotesDisplayed} onSearch={this.onSearchHandler} keyword={this.props.searchKeyword} />} />
             <Route
               path="/archives"
