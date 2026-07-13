@@ -5,12 +5,15 @@ import "./styles/style.css";
 // import AppWrapper from './App';
 import AppWrapper from "./App1";
 import { SessionProvider } from "./contexts/SessionContext";
+import { LocaleProvider } from "./contexts/LocaleContext";
 
 const root = createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
-    <SessionProvider>
-      <AppWrapper />
-    </SessionProvider>
+    <LocaleProvider>
+      <SessionProvider>
+        <AppWrapper />
+      </SessionProvider>
+    </LocaleProvider>
   </BrowserRouter>,
 );
