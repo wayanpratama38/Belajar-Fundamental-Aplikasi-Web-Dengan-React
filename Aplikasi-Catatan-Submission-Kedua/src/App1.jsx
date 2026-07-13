@@ -7,13 +7,15 @@ import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import AddNotePage from "./pages/AddNotePage";
 import { useSession } from "./contexts/SessionContext";
+import { useTheme } from "./contexts/ThemeContext";
 
 export default function AppWrapper() {
   const { user } = useSession();
+  const { theme } = useTheme();
 
   if (user === null) {
     return (
-      <div className="app-container">
+      <div className="app-container" data-theme={theme}>
         <header>
           <NavigationBar />
         </header>
@@ -29,7 +31,7 @@ export default function AppWrapper() {
   }
 
   return (
-    <div className="app-container">
+    <div className="app-container" data-theme={theme}>
       <header>
         <NavigationBar />
       </header>
