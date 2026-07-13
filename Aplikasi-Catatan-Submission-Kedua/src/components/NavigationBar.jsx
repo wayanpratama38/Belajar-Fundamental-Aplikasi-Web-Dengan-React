@@ -10,32 +10,6 @@ export default function NavigationBar() {
   const { theme, toggleTheme } = useTheme();
   const { text, toggleLocale } = useLocale();
 
-  if (user === null) {
-    return (
-      <>
-        <h1>
-          <Link>{text.appTitle}</Link>
-        </h1>
-        <nav className="navigation">
-          <ul>
-            <li className="toggle-locale">
-              <button onClick={toggleLocale}>{ text.toggleLanguage}</button>
-            </li>
-            <li className="toggle-theme">
-              <button onClick={toggleTheme}>{ theme === "dark" ? <img src={sun} alt="Sun" /> : <img src={moon} alt="Moon" /> }</button>
-            </li>
-            <li className="input-login">
-              <Link to="/login">{text.login}</Link>
-            </li>
-            <li className="input-register">
-              <Link to="/register">{text.register}</Link>
-            </li>
-          </ul>
-        </nav>
-      </>
-    );
-  }
-
   return (
     <>
       <h1>
@@ -43,18 +17,35 @@ export default function NavigationBar() {
       </h1>
       <nav className="navigation">
         <ul>
-          <li>
-            <Link to="/archives">{text.archive}</Link>
-          </li>
+          {user !== null && (
+            <li>
+              <Link to="/archives">{text.archive}</Link>
+            </li>
+          )}
+
           <li className="toggle-locale">
-            <button onClick={toggleLocale}>{ text.toggleLanguage}</button>
+            <button onClick={toggleLocale}>{text.toggleLanguage}</button>
           </li>
           <li className="toggle-theme">
-            <button onClick={toggleTheme}>{ theme === "dark" ? <img src={sun} alt="Sun" /> : <img src={moon} alt="Moon" /> }</button>
+            <button onClick={toggleTheme}>
+              {theme === "dark" ? <img src={sun} alt="Sun" /> : <img src={moon} alt="Moon" />}
+            </button>
           </li>
-          <li className="button-logout">
-            <button className="button-logout" onClick={onLogout} >{text.logout}</button>
-          </li>
+
+          {user === null ? (
+            <>
+              <li className="input-login">
+                <Link to="/login">{text.login}</Link>
+              </li>
+              <li className="input-register">
+                <Link to="/register">{text.register}</Link>
+              </li>
+            </>
+          ) : (
+            <li >
+              <button className="button-logout" onClick={onLogout}>{text.logout}</button>
+            </li>
+          )}
         </ul>
       </nav>
     </>
