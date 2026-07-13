@@ -2,6 +2,7 @@
 import React from 'react';
 import useInput from '../hooks/useInput';
 import { register } from '../utils/network-data';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function RegisterPage() {
@@ -9,6 +10,9 @@ export default function RegisterPage() {
   const [email, handleEmailChange] = useInput('');
   const [password, handlePasswordChange] = useInput('');
   const [confirmPassword, handleConfirmPasswordChange] = useInput('');
+
+  const navigate = useNavigate();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,6 +25,7 @@ export default function RegisterPage() {
       alert(result.message);
     } else {
       alert('Registration successful');
+      navigate('/login');
     }
   }
 
