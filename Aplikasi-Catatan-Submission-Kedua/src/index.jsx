@@ -3,11 +3,13 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom'
 import './styles/style.css';
 import AppWrapper from './App';
+import { SessionProvider } from './contexts/SessionContext';
 
 const root = createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
-    <AppWrapper />
+    <SessionProvider>
+      <AppWrapper />
+    </SessionProvider>
   </BrowserRouter>
 );
-
