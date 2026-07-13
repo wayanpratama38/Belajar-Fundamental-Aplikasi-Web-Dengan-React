@@ -2,17 +2,27 @@ import SearchBar from "../components/SearchBar";
 import Button from "../components/Button";
 import AddIcon from "../assets/add.svg";
 import NoteList from "../components/NoteList";
+import useNote from "../hooks/useNote";
+import useSearch from "../hooks/useSearch";
+import { getActiveNotes } from "../utils/network-data";
 
-export default function MainPage({ notes, onSearch, keyword }) {
+export default function MainPage() {
+  const [activeNotes, _, isActiveLoading] = useNote(getActiveNotes);
+  const [keyword, setKeyword] = useSearch("title");
+
   return (
     <section className="homepage">
       <SearchBar
         text={"Catatan Aktif"}
         placeholder={"Silahkan isi dengan nama catatan"}
-        onSearch={onSearch}
+        onSearch={setKeyword}
         keyword={keyword}
       />
-      <NoteList notes={notes} />
+      {isActiveLoading ? (
+        <p>Memuat Catatan Aktif</p>
+      ) : (
+        <NoteList notes={activeNotes} />
+      )}
       <div className="homepage__action">
         <Button image={AddIcon} to={"/new"} altImage={"Add button image"} />
       </div>
