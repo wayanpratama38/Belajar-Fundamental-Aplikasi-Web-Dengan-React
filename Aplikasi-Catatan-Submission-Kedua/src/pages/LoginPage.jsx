@@ -18,31 +18,39 @@ export default function LoginPage() {
     // Menggunakan onLogin dari sessionContext untuk login
     const { success } = await onLogin({ email, password });
     // Kirim alert gagal kalau kredensial tidak valid
-    if (!success) {
-      alert(text.failedLoginAlert);
+    if (success) {
+      // Kirim alert berhasil login dan nvaigate to root endpoint
+      alert(text.successLoginAlert);
+      navigate("/");
     }
-
-    // Kirim alert berhasil login dan nvaigate to root endpoint
-    alert(text.successLoginAlert);
-    navigate("/");
   };
 
   return (
     <section className="login-page">
       <form onSubmit={submitHandler}>
-        <input
-          type="email"
-          value={email}
-          placeholder="email@gmail.com"
-          onChange={setEmail}
-        />
-        <input
-          type="password"
-          value={password}
-          placeholder="password"
-          onChange={setPassword}
-        />
-        <button type="submit">Login</button>
+        <div className="input-login">
+          <label htmlFor="email">{text.emailLabelForm}</label>
+          <input
+            type="email"
+            value={email}
+            placeholder="email@gmail.com"
+            onChange={setEmail}
+            id="email"
+          />
+        </div>
+        <div className="input-login">
+          <label htmlFor="password">{text.passwordLabelForm}</label>
+          <input
+            type="password"
+            value={password}
+            placeholder="password"
+            onChange={setPassword}
+            id="password"
+          />
+        </div>
+        <div className="input-login">
+          <button type="submit">{text.login}</button>
+        </div>
       </form>
     </section>
   );

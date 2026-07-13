@@ -30,39 +30,50 @@ export default function RegisterPage() {
   return (
     <section className="register-page">
       <form action="post" onSubmit={handleSubmit}>
-        <label for="name-input">{text.nameLabelForm}</label>
-        <input
-          type="text"
-          value={name}
-          placeholder="budi"
-          onChange={handleNameChange}
-          id="name-input"
-        />
-        <label for="name-input">{text.emailLabelForm}</label>
-        <input
-          type="email"
-          value={email}
-          placeholder="email@gmail.com"
-          onChange={handleEmailChange}
-          id="email-input"
-        />
-        <label for="name-input">{text.passwordLabelForm}</label>
-        <input
-          type="password"
-          value={password}
-          placeholder="password"
-          onChange={handlePasswordChange}
-          id="password-input"
-        />
-        <label for="name-input">{text.confirmPasswordLabelForm}</label>
-        <input
-          type="password"
-          value={confirmPassword}
-          placeholder="confirm password"
-          onChange={handleConfirmPasswordChange}
-          id="confirm-password-input"
-        />
-        <button>Register</button>
+        <div className="input-register">
+          <label htmlFor="name-input">{text.nameLabelForm}</label>
+          <input
+            type="text"
+            value={name}
+            placeholder="budi"
+            onChange={handleNameChange}
+            id="name-input"
+          />
+        </div>
+        <div className="input-register">
+          <label htmlFor="email-input">{text.emailLabelForm}</label>
+          <input
+            type="email"
+            value={email}
+            placeholder="email@gmail.com"
+            onChange={handleEmailChange}
+            id="email-input"
+          />
+        </div>
+        <div className="input-register">
+          <label htmlFor="password-input">{text.passwordLabelForm}</label>
+          <input
+            type="password"
+            value={password}
+            placeholder="password"
+            onChange={handlePasswordChange}
+            id="password-input"
+          />
+        </div>
+
+        <div className="input-register">
+          <label htmlFor="confirm-password-input">{text.confirmPasswordLabelForm}</label>
+          <input
+            type="password"
+            value={confirmPassword}
+            placeholder="confirm password"
+            onChange={handleConfirmPasswordChange}
+            id="confirm-password-input"
+          />
+        </div>
+        <div className="input-register">
+          <button>Register</button>
+        </div>
       </form>
     </section>
   );

@@ -13,6 +13,7 @@ import DeleteIcon from "../assets/delete.svg";
 import ArchiveIconUp from "../assets/archive-up.svg";
 import useNote from "../hooks/useNote";
 import { useLocale } from "../contexts/LocaleContext";
+import Loading from "../components/LoadingComponent";
 
 export default function DetailNotePage() {
   const { id } = useParams();
@@ -32,7 +33,7 @@ export default function DetailNotePage() {
   return (
     <div className="detail-page">
       {isNoteLoading ? (
-        <p>Memuat Detail Catatan</p>
+        <Loading />
       ) : (
         <>
           <h1 className="detail-page__title">{note.title}</h1>

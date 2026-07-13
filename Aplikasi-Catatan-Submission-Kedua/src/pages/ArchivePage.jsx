@@ -4,6 +4,7 @@ import { getArchivedNotes } from "../utils/network-data";
 import useSearch from "../hooks/useSearch";
 import useNote from "../hooks/useNote";
 import { useLocale } from "../contexts/LocaleContext";
+import Loading from "../components/LoadingComponent";
 
 export default function ArchivePage() {
   const [archivedNotes, isArchivedLoading] = useNote(getArchivedNotes);
@@ -17,14 +18,16 @@ export default function ArchivePage() {
   return (
     <section className="archivepage">
       <SearchBar
-        text={text.archivedNotes}
+        text={text.archiveNotes}
         placeholder={text.searchPlaceholder}
         keyword={keyword}
         onSearch={setKeyword}
       />
       {isArchivedLoading ? (
-        <p>Memuat Catatan Arsip</p>
-      ) : (
+        <Loading />
+      ) : filteredNotes.length === 0 ? (
+        <p>{text.noNoteFound}</p>
+        ) : (
         <NoteList notes={filteredNotes} />
       )}
     </section>

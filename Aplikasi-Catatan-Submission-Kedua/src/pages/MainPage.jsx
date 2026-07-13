@@ -6,6 +6,7 @@ import useNote from "../hooks/useNote";
 import useSearch from "../hooks/useSearch";
 import { getActiveNotes } from "../utils/network-data";
 import { useLocale } from "../contexts/LocaleContext";
+import Loading from "../components/LoadingComponent";
 
 export default function MainPage() {
   const [activeNotes, isActiveLoading] = useNote(getActiveNotes);
@@ -25,7 +26,9 @@ export default function MainPage() {
         keyword={keyword}
       />
       {isActiveLoading ? (
-        <p>Memuat Catatan Aktif</p>
+        <Loading />
+      ) : filteredNotes.length === 0 ? (
+        <p>{text.noNoteFound}</p>
       ) : (
         <NoteList notes={filteredNotes} />
       )}
