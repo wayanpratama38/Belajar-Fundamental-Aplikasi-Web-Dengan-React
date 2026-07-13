@@ -7,8 +7,12 @@ import useSearch from "../hooks/useSearch";
 import { getActiveNotes } from "../utils/network-data";
 
 export default function MainPage() {
-  const [activeNotes, _, isActiveLoading] = useNote(getActiveNotes);
+  const [activeNotes, isActiveLoading] = useNote(getActiveNotes);
   const [keyword, setKeyword] = useSearch("title");
+
+  const filteredNotes = activeNotes.filter((note) => {
+    return note.title.toLowerCase().includes(keyword.toLowerCase());
+  });
 
   return (
     <section className="homepage">
@@ -21,7 +25,7 @@ export default function MainPage() {
       {isActiveLoading ? (
         <p>Memuat Catatan Aktif</p>
       ) : (
-        <NoteList notes={activeNotes} />
+        <NoteList notes={filteredNotes} />
       )}
       <div className="homepage__action">
         <Button image={AddIcon} to={"/new"} altImage={"Add button image"} />

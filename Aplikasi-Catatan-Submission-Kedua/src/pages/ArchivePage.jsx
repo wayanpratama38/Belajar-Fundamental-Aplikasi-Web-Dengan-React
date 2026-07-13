@@ -5,8 +5,12 @@ import useSearch from "../hooks/useSearch";
 import useNote from "../hooks/useNote";
 
 export default function ArchivePage() {
-  const [archivedNotes, _, isArchivedLoading] = useNote(getArchivedNotes);
+  const [archivedNotes, isArchivedLoading] = useNote(getArchivedNotes);
   const [keyword, setKeyword] = useSearch("title");
+
+  const filteredNotes = archivedNotes.filter((note) => {
+    return note.title.toLowerCase().includes(keyword.toLowerCase());
+  });
 
   return (
     <section className="archivepage">
@@ -19,7 +23,7 @@ export default function ArchivePage() {
       {isArchivedLoading ? (
         <p>Memuat Catatan Arsip</p>
       ) : (
-        <NoteList notes={archivedNotes} />
+        <NoteList notes={filteredNotes} />
       )}
     </section>
   );
