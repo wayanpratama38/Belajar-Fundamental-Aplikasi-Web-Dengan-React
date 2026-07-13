@@ -20,5 +20,5 @@ export default function useNote(fetchFunction) {
     fetchData();
   }, []);
 
-  return [notes, setNotes, loading];
+  return [notes, loading];
 }
