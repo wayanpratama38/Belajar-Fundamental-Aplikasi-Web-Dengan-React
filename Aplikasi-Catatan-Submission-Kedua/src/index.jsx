@@ -6,14 +6,17 @@ import "./styles/style.css";
 import AppWrapper from "./App1";
 import { SessionProvider } from "./contexts/SessionContext";
 import { LocaleProvider } from "./contexts/LocaleContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
 
 const root = createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
-    <LocaleProvider>
-      <SessionProvider>
-        <AppWrapper />
-      </SessionProvider>
-    </LocaleProvider>
+    <ThemeProvider>
+      <LocaleProvider>
+        <SessionProvider>
+          <AppWrapper />
+        </SessionProvider>
+      </LocaleProvider>
+    </ThemeProvider>
   </BrowserRouter>,
 );
