@@ -1,21 +1,27 @@
 import { Link } from "react-router-dom";
 import { useSession } from "../contexts/SessionContext";
+import { useLocale } from "../contexts/LocaleContext";
 export default function NavigationBar() {
   const { user, onLogout } = useSession();
+
+  const { text, toggleLocale } = useLocale();
 
   if (user === null) {
     return (
       <>
         <h1>
-          <Link>Aplikasi Catatan</Link>
+          <Link>{text.appTitle}</Link>
         </h1>
         <nav className="navigation">
           <ul>
             <li>
-              <Link to="/register">Register</Link>
+              <button onClick={toggleLocale}>{text.toggleLanguage}</button>
             </li>
             <li>
-              <Link to="/login">login</Link>
+              <Link to="/register">{text.register}</Link>
+            </li>
+            <li>
+              <Link to="/login">{text.login}</Link>
             </li>
           </ul>
         </nav>
@@ -26,15 +32,18 @@ export default function NavigationBar() {
   return (
     <>
       <h1>
-        <Link to="/">Aplikasi Catatan</Link>
+        <Link to="/">{text.appTitle}</Link>
       </h1>
       <nav className="navigation">
         <ul>
           <li>
-            <Link to="/archives">Archive</Link>
+            <Link to="/archives">{text.archive}</Link>
           </li>
           <li>
-            <button onClick={onLogout}>Logout</button>
+            <button onClick={toggleLocale}>{text.toggleLanguage}</button>
+          </li>
+          <li>
+            <button onClick={onLogout}>{text.logout}</button>
           </li>
         </ul>
       </nav>

@@ -5,10 +5,12 @@ import NoteList from "../components/NoteList";
 import useNote from "../hooks/useNote";
 import useSearch from "../hooks/useSearch";
 import { getActiveNotes } from "../utils/network-data";
+import { useLocale } from "../contexts/LocaleContext";
 
 export default function MainPage() {
   const [activeNotes, isActiveLoading] = useNote(getActiveNotes);
   const [keyword, setKeyword] = useSearch("title");
+  const { text } = useLocale();
 
   const filteredNotes = activeNotes.filter((note) => {
     return note.title.toLowerCase().includes(keyword.toLowerCase());
@@ -17,8 +19,8 @@ export default function MainPage() {
   return (
     <section className="homepage">
       <SearchBar
-        text={"Catatan Aktif"}
-        placeholder={"Silahkan isi dengan nama catatan"}
+        text={text.activeNotes}
+        placeholder={text.searchPlaceholder}
         onSearch={setKeyword}
         keyword={keyword}
       />
@@ -28,7 +30,7 @@ export default function MainPage() {
         <NoteList notes={filteredNotes} />
       )}
       <div className="homepage__action">
-        <Button image={AddIcon} to={"/new"} altImage={"Add button image"} />
+        <Button image={AddIcon} to={"/new"} altImage={text.addAltImage} />
       </div>
     </section>
   );

@@ -2,10 +2,12 @@ import React from "react";
 import useInput from "../hooks/useInput";
 import { useSession } from "../contexts/SessionContext";
 import { useNavigate } from "react-router-dom";
+import { useLocale } from "../contexts/LocaleContext";
 
 export default function LoginPage() {
   const [email, setEmail] = useInput("");
   const [password, setPassword] = useInput("");
+  const { text } = useLocale();
   const navigate = useNavigate();
 
   const { onLogin } = useSession();
@@ -17,11 +19,11 @@ export default function LoginPage() {
     const { success } = await onLogin({ email, password });
     // Kirim alert gagal kalau kredensial tidak valid
     if (!success) {
-      alert("Kredensial tidak valid");
+      alert(text.failedLoginAlert);
     }
 
     // Kirim alert berhasil login dan nvaigate to root endpoint
-    alert("Login berhasil");
+    alert(text.successLoginAlert);
     navigate("/");
   };
 

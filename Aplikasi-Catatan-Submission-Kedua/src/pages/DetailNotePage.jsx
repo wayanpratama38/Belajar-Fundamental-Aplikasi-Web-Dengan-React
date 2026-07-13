@@ -12,10 +12,12 @@ import ArchiveIconDown from "../assets/archive-down.svg";
 import DeleteIcon from "../assets/delete.svg";
 import ArchiveIconUp from "../assets/archive-up.svg";
 import useNote from "../hooks/useNote";
+import { useLocale } from "../contexts/LocaleContext";
 
 export default function DetailNotePage() {
   const { id } = useParams();
   const [note, _, isNoteLoading] = useNote(() => getNote(id));
+  const { text } = useLocale();
   const navigate = useNavigate();
 
   if (!note) {
@@ -42,7 +44,9 @@ export default function DetailNotePage() {
             <Button
               type="submit"
               image={note.archived ? ArchiveIconUp : ArchiveIconDown}
-              altImage={"Unarchive Icon"}
+              altImage={
+                note.archived ? text.unarchiveAltImage : text.archiveAltImage
+              }
               onClick={() =>
                 actionHandler(note.archived ? unarchiveNote : archiveNote)
               }
@@ -50,7 +54,7 @@ export default function DetailNotePage() {
             <Button
               type="submit"
               image={DeleteIcon}
-              altImage={"Delete Icon"}
+              altImage={text.deleteAltImage}
               onClick={() => actionHandler(deleteNote)}
             />
           </div>

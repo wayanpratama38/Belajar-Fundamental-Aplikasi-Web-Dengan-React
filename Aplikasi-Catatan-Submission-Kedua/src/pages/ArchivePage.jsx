@@ -3,10 +3,12 @@ import NoteList from "../components/NoteList";
 import { getArchivedNotes } from "../utils/network-data";
 import useSearch from "../hooks/useSearch";
 import useNote from "../hooks/useNote";
+import { useLocale } from "../contexts/LocaleContext";
 
 export default function ArchivePage() {
   const [archivedNotes, isArchivedLoading] = useNote(getArchivedNotes);
   const [keyword, setKeyword] = useSearch("title");
+  const { text } = useLocale();
 
   const filteredNotes = archivedNotes.filter((note) => {
     return note.title.toLowerCase().includes(keyword.toLowerCase());
@@ -15,8 +17,8 @@ export default function ArchivePage() {
   return (
     <section className="archivepage">
       <SearchBar
-        text={"Catatan Arsip"}
-        placeholder={"Silahkan isi dengan nama catatan arsip"}
+        text={text.archivedNotes}
+        placeholder={text.searchPlaceholder}
         keyword={keyword}
         onSearch={setKeyword}
       />
