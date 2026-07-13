@@ -1,87 +1,21 @@
-import React from "react";
-import { Routes, Route, useSearchParams } from "react-router-dom";
-import {
-  addNote,
-  archiveNote,
-  deleteNote,
-  getActiveNotes,
-  getArchivedNotes,
-  unarchiveNote,
-} from "./utils/local-data";
+import { Routes, Route, Navigate } from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import DetailNotePage from "./pages/DetailNotePage";
 import ArchivePage from "./pages/ArchivePage";
 import NavigationBar from "./components/NavigationBar";
-import AddNotePageWrapper from "./pages/AddNotePage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
+import AddNotePage from "./pages/AddNotePage";
+import { useSession } from "./contexts/SessionContext";
+import { useTheme } from "./contexts/ThemeContext";
 
 export default function AppWrapper() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { user } = useSession();
+  const { theme } = useTheme();
 
-  const keyword = searchParams.get("title") || "";
-  const onChangeSearchParams = (keyword) => {
-    return setSearchParams({ title: keyword });
-  }
-
-  return <App searchKeyword={keyword} onSearchHandler={onChangeSearchParams} />
-}
-
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      notes: getActiveNotes(),
-      archivedNotes: getArchivedNotes(),
-    };
-    this.onAddHandler = this.onAddHandler.bind(this);
-    this.onDeleteHandler = this.onDeleteHandler.bind(this);
-    this.onArchiveHandler = this.onArchiveHandler.bind(this);
-    this.onUnarchiveHandler = this.onUnarchiveHandler.bind(this);
-    this.onSearchHandler = this.onSearchHandler.bind(this)
-  }
-
-  onArchiveHandler(id) {
-    archiveNote(id);
-    this.setState({
-      notes: this.props.searchKeyword ? [] : getActiveNotes(),
-      archivedNotes: this.props.searchKeyword ? [] : getArchivedNotes(),
-    });
-  }
-
-  onDeleteHandler(id) {
-    deleteNote(id);
-    this.setState({ notes: getActiveNotes(), archivedNotes: getArchivedNotes() });
-  }
-
-  onAddHandler({ title, body }) {
-    addNote({ title: title, body: body });
-    this.setState({ notes: getActiveNotes() });
-  }
-
-  onUnarchiveHandler(id) {
-    unarchiveNote(id);
-    this.setState({
-      notes: getActiveNotes(),
-      archivedNotes: getArchivedNotes(),
-    });
-  }
-
-  onSearchHandler(keyword) {
-    this.props.onSearchHandler(keyword);
-  }
-
-  render() {
-    const activeNotesDisplayed = this.state.notes.filter((note) => {
-      return note.title.toLocaleLowerCase().includes(this.props.searchKeyword.toLocaleLowerCase());
-    })
-
-    const archiveNotesDisplayed = this.state.archivedNotes.filter((note) => {
-      return note.title.toLocaleLowerCase().includes(this.props.searchKeyword.toLocaleLowerCase());
-    })
+  if (user === null) {
     return (
-      <div className="app-container">
+      <div className="app-container" data-theme={theme}>
         <header>
           <NavigationBar />
         </header>
@@ -89,28 +23,28 @@ class App extends React.Component {
           <Routes>
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/" element={<MainPage notes={activeNotesDisplayed} onSearch={this.onSearchHandler} keyword={this.props.searchKeyword} />} />
-            <Route
-              path="/archives"
-              element={<ArchivePage archivedNotes={archiveNotesDisplayed} onSearch={this.onSearchHandler} keyword={this.props.searchKeyword} />}
-            />
-            <Route
-              path="/:id"
-              element={
-                <DetailNotePage
-                  onDelete={this.onDeleteHandler}
-                  onArchive={this.onArchiveHandler}
-                  onUnarchive={this.onUnarchiveHandler}
-                />
-              }
-            />
-            <Route
-              path="/new"
-              element={<AddNotePageWrapper onAdd={this.onAddHandler} />}
-            />
+            <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </main>
       </div>
     );
   }
+
+  return (
+    <div className="app-container" data-theme={theme}>
+      <header>
+        <NavigationBar />
+      </header>
+      <main>
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/archives" element={<ArchivePage />} />
+          <Route path="/:id" element={<DetailNotePage />} />
+          <Route path="/new" element={<AddNotePage />} />
+          <Route path="/login" element={<Navigate to="/" replace />} />
+          <Route path="/register" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
+    </div>
+  );
 }
